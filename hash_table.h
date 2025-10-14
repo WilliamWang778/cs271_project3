@@ -31,7 +31,7 @@ public:
     // Pre-condition : Element exists
     // Post-condition : returns data
     T get_data();
-    
+
 };
 
 template<typename T>
@@ -41,11 +41,12 @@ private:
     int size; // number of slots(m)
 
 public:
+    
+    HashTable(int m); // constructor
+    ~HashTable(); // destructor
 
-    HashTable(int m);
-    ~HashTable();
-
-    void insert(T data, int key);
+    //
+    void insert(T data, int key); 
 
     void remove(int key);
 
