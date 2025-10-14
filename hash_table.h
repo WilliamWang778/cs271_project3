@@ -18,11 +18,11 @@ private:
     int key;
 public:
 
-    Element<T>* next; // next
-    Element<T>* prev; // prev
+    Element<T>* next; 
+    Element<T>* prev; 
     
-    Element(T data, int key); // constructor 
-    ~Element(); // destructor
+    Element(T data, int key); 
+    ~Element(); 
 
     // Pre-condition : Element exists
     // Post-condition : returns key value
