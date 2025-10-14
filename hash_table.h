@@ -44,14 +44,21 @@ public:
     
     HashTable(int m); // constructor
     ~HashTable(); // destructor
-
-    //
+    
+    // Insert operation
+    // Pre-condition: valid data and key provided
+    // Post-condition: Element with data and key inserted at head of appropriate chain
     void insert(T data, int key); 
 
+    // Remove operation
+    // Pre-condition: valid key provided
+    // Post-condition: Element with given key removed if it exists
     void remove(int key);
 
-    void member(T data, int key);
-
+    // Pre-condition: valid key provided
+    // Post-condition : returns true if Element with data and key exists, false otherwise
+    bool member(T data, int key);
+    
     std::string to_string();
 
 }
