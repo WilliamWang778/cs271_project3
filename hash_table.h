@@ -10,59 +10,51 @@
 #include <string>
 #include <stdexcept>
 #include <sstream>
-#include <algorithm>
 
-template<typename T>
-class MinQueue {
+template<typename T> 
+class Element {
 private:
-    int capacity;
-    int heap_size;
-    T* heap;
-
-    int parent(int i) { 
-        return (i - 1) / 2; 
-    }
-    int left(int i) { 
-        return 2 * i + 1; 
-    }
-    int right(int i) { 
-        return 2 * i + 2; 
-    }
-
-    void resize() {
-    if (capacity == 0) {
-        capacity = 10;
-    } else {
-        capacity = capacity * 2;
-    }
-    T* newHeap = new T[capacity];
-    for (int i = 0; i < heap_size; i++) {
-        newHeap[i] = heap[i];
-    }
-    delete[] heap;
-    heap = newHeap;
-}
-
+    T data;
+    int key;
 public:
-    MinQueue();
-    MinQueue(T* A, int n);
-    ~MinQueue();
 
-    void insert(T x);
-    T min();
-    T extract_min();
-    void decrease_key(int i, T k);
+    Element<T>* next; // next
+    Element<T>* prev; // prev
+    
+    Element(T data, int key); // constructor 
+    ~Element(); // destructor
 
-    void min_heapify(int i);
-    void build_heap();
+    // Pre-condition : Element exists
+    // Post-condition : returns key value
+    int get_key(); 
 
-    void sort(T* A);
-    std::string to_string();
-
-    void set(int i, T val);
-    void allocate(int n);
+    // Pre-condition : Element exists
+    // Post-condition : returns data
+    T get_data();
+    
 };
 
-#include "minqueue.cpp"
+template<typename T>
+class HashTable {
+private:
+    Element<T>** table; // pointers to Element (head of each chain)
+    int size; // number of slots(m)
+
+public:
+
+    HashTable(int m);
+    ~HashTable();
+
+    void insert(T data, int key);
+
+    void remove(int key);
+
+    void member(T data, int key);
+
+    std::string to_string();
+
+}
+
+#include "hash_table.cpp"
 
 #endif
