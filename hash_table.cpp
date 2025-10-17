@@ -26,6 +26,7 @@ Element<T>::Element(const T& data, int k){
 }
 
 template<typename T>
+
 Element<T>:: ~Element(){
 
 }
@@ -56,6 +57,26 @@ const T& Element<T>::get_data() const {
 
 ////////////////////////////////////////////////////////////////////////
 
+
+
+// H function
+/* 
+index = k mod size (if k mod size >= 0)
+index = (k mod size) + size (if k mod size < 0)
+*/
+
+template<typename T>
+int HashTable<T>::h(int k) const {
+    int index = k % size;
+    if (index < 0){
+        index = index + size;
+    }
+    return index;
+}
+
+
+
+
 /*
 HashTable Constructor
 Parameters: int m is the number of slots in the hash table
@@ -65,12 +86,16 @@ Postcondition: HashTable created with m slots, it is initialized to be empty
 
 template <typename T>
 HashTable<T>::HashTable(int m){
+
     if (m <= 0){
         m = 1;
     }
+
     this -> size = m;
     this -> n = 0;
+
     table = new Element<T>*[this -> size]();
+
 }
 
 
@@ -84,7 +109,7 @@ Postcondition: HashTable and all its Elements are properly deallocated
 template<typename T>
 HashTable<T>::~HashTable(){
    
-    for (int i = 0; i < size;i++){
+    for (int i = 0; i < size; i++){
         Element<T>* current = table[i];
         while (current != nullptr){
             Element<T>* next = current -> next;
@@ -105,7 +130,7 @@ template <typename T>
 void HashTable<T> :: insert(T data, int k){
     
     int index = h(k);
-
+    
     Element<T>* node = new Element<T>(data, k);
 
     node -> prev = nullptr;
@@ -117,7 +142,7 @@ void HashTable<T> :: insert(T data, int k){
     
     table[index] = node;
     
-    n += 1;
+    this->n += 1;
 }
 
 /*
@@ -201,14 +226,5 @@ string HashTable<T>::to_string() {
     return ss.str();
 }
 
-// H function
-template<typename T>
-int HashTable<T>::h(int k) const {
-    int index = k % size;
-    if (index < 0){
-        index = index + size;
-    }
-    return index;
-}
 
 
