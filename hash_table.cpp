@@ -15,19 +15,24 @@ Postcondition:
 */
 
 template<typename T>
-Element<T>::Element(T data, int key){
+Element<T>::Element(const T& data, int k){
     this -> data = data;
-    this -> key = key;
+    this -> k = k;
     this -> next = nullptr;
     this -> prev = nullptr;
+}
+
+template<typename T>
+Element<T>:: ~Element(){
+
 }
 
 /*
 get_key
 */
 template<typename T>
-int Element<T>::get_key() {
-    return key;
+int Element<T>::get_key() const {
+    return k;
 }
 
 /*
@@ -35,7 +40,85 @@ get_data
 */
 
 template<typename T>
-T Element<T>::get_data() { 
+const T& Element<T>::get_data() const { 
     return data;
 }
 
+
+template <typename T>
+HashTable<T>::HashTable(int m){
+    if (m <= 0){
+        m = 1;
+    }
+    this -> size = m;
+    this -> n = 0;
+    table = new Element<T>*[this -> size]();
+
+}
+
+template<typename T>
+HashTable<T>::~HashTable(){
+   
+    for (int i = 0; i < size;i++){
+        Element<T>* current = table[i];
+        while (current != nullptr){
+            Element<T>* next = current -> next;
+            delete current;
+            current = next;
+        }
+    }
+    delete[] table;
+}
+
+
+template <typename T>
+void HashTable<T> :: insert(T data, int k){
+    int index = h(k);
+    Element<T>* node = new Element<T>(data, k);
+    node -> prev = nullptr;
+    node -> next = table[index];
+    if (table[index] != nullptr){
+        table[index] -> prev = node;
+    }
+    table[index] = node;
+    n += 1;
+}
+
+template <typename T>
+void HashTable<T> :: remove (int k){
+    int index = h(k);
+    Element<T>* current = table[index];
+    while (current != nullptr){
+        if (current->get_key() == k){
+            if (current -> prev != nullptr){
+                current -> prev -> next = current -> next;
+            }
+            else{
+                table[index] = current -> next;
+            }
+
+            if (current -> next != nullptr){
+                current -> next -> prev = current -> prev;
+            }
+            delete current;
+            n -= 1;
+            return;
+        }
+        current = current -> next; 
+    }
+}
+
+
+
+
+
+
+// H function
+template<typename T>
+int HashTable<T>::h(int k) const {
+    int index = k % size;
+    if (index < 0){
+        index = index + size;
+    }
+    return index;
+}

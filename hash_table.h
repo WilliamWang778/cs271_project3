@@ -15,22 +15,22 @@ template<typename T>
 class Element {
 private:
     T data;
-    int key;
+    int k;
 public:
 
     Element<T>* next; 
     Element<T>* prev; 
     
-    Element(T data, int key); 
+    Element(const T& data, int k); 
     ~Element(); 
 
     // Pre-condition : Element exists
     // Post-condition : returns key value
-    int get_key(); 
+    int get_key() const; 
 
     // Pre-condition : Element exists
     // Post-condition : returns data
-    T get_data();
+    const T& get_data() const;
 
 };
 
@@ -39,6 +39,8 @@ class HashTable {
 private:
     Element<T>** table; // pointers to Element (head of each chain)
     int size; // number of slots(m)
+    int n;
+    int h(int k) const;
 
 public:
     
@@ -48,20 +50,20 @@ public:
     // Insert operation
     // Pre-condition: valid data and key provided
     // Post-condition: Element with data and key inserted at head of appropriate chain
-    void insert(T data, int key); 
+    void insert(T data, int k); 
 
     // Remove operation
     // Pre-condition: valid key provided
     // Post-condition: Element with given key removed if it exists
-    void remove(int key);
+    void remove(int k);
 
     // Pre-condition: valid key provided
     // Post-condition : returns true if Element with data and key exists, false otherwise
-    bool member(T data, int key);
+    bool member(T data, int k);
     
     std::string to_string();
 
-}
+};
 
 #include "hash_table.cpp"
 
