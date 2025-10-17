@@ -59,8 +59,8 @@ const T& Element<T>::get_data() const {
 
 
 
-// H function
 /* 
+H function
 index = k mod size (if k mod size >= 0)
 index = (k mod size) + size (if k mod size < 0)
 */
@@ -130,7 +130,7 @@ template <typename T>
 void HashTable<T> :: insert(T data, int k){
     
     int index = h(k);
-    
+
     Element<T>* node = new Element<T>(data, k);
 
     node -> prev = nullptr;
@@ -177,8 +177,9 @@ void HashTable<T> :: remove (int k){
 
 
 /*
+member
 Precondition: Valid data and key provided
-Postcondition: Returns true if element with data and key exists, false otherwise
+Postcondition: Returns true if element with data and key, false otherwise
 */
 template<typename T>
 bool HashTable<T>::member(T data, int k) {
@@ -196,6 +197,7 @@ bool HashTable<T>::member(T data, int k) {
 }
 
 /*
+to_string
 Precondition: HashTable exists
 Postcondition: Returns string representation of the hash table
 */
