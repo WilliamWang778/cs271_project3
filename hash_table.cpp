@@ -8,10 +8,13 @@
 
 using namespace std;
 
+////////////////////////////////////////////////////////////////////////
+
 /*
-Parameters: 
-Precondition: 
-Postcondition:
+Element Constructor
+Parameters: data to be stored in the element, k is the key associated with the element.
+Precondition: Valid data and key provided
+Postcondition: Element created with data and key, next and prev pointers initialized to nullptr
 */
 
 template<typename T>
@@ -29,7 +32,11 @@ Element<T>:: ~Element(){
 
 /*
 get_key
+Parameters: None
+Precondition: Element exists
+Postcondition: returns key value
 */
+
 template<typename T>
 int Element<T>::get_key() const {
     return k;
@@ -37,12 +44,24 @@ int Element<T>::get_key() const {
 
 /*
 get_data
+Parameters: None
+Precondition: Element exists
+Postcondition: returns data
 */
 
 template<typename T>
 const T& Element<T>::get_data() const { 
     return data;
 }
+
+////////////////////////////////////////////////////////////////////////
+
+/*
+HashTable Constructor
+Parameters: int m is the number of slots in the hash table
+Precondition: m is a valid integer
+Postcondition: HashTable created with m slots, it is initialized to be empty
+*/
 
 template <typename T>
 HashTable<T>::HashTable(int m){
@@ -52,8 +71,15 @@ HashTable<T>::HashTable(int m){
     this -> size = m;
     this -> n = 0;
     table = new Element<T>*[this -> size]();
-
 }
+
+
+/*
+HashTable Destructor
+Precondition: HashTable exists
+Postcondition: HashTable and all its Elements are properly deallocated
+*/
+
 
 template<typename T>
 HashTable<T>::~HashTable(){
@@ -69,19 +95,36 @@ HashTable<T>::~HashTable(){
     delete[] table;
 }
 
+/*
+Insert
+Precondition: Valid data and int k as key provided
+Postcondition: Element with data and key inserted at the head of the chain at index h(k)
+*/
 
 template <typename T>
 void HashTable<T> :: insert(T data, int k){
+    
     int index = h(k);
+
     Element<T>* node = new Element<T>(data, k);
+
     node -> prev = nullptr;
     node -> next = table[index];
+    
     if (table[index] != nullptr){
         table[index] -> prev = node;
     }
+    
     table[index] = node;
+    
     n += 1;
 }
+
+/*
+remove
+Precondition: valid int k as key provided
+Postcondition: Element with given key removed if it exists
+*/
 
 template <typename T>
 void HashTable<T> :: remove (int k){
@@ -107,20 +150,6 @@ void HashTable<T> :: remove (int k){
     }
 }
 
-
-
-
-
-
-// H function
-template<typename T>
-int HashTable<T>::h(int k) const {
-    int index = k % size;
-    if (index < 0){
-        index = index + size;
-    }
-    return index;
-}
 
 /*
 Precondition: Valid data and key provided
@@ -171,3 +200,15 @@ string HashTable<T>::to_string() {
     
     return ss.str();
 }
+
+// H function
+template<typename T>
+int HashTable<T>::h(int k) const {
+    int index = k % size;
+    if (index < 0){
+        index = index + size;
+    }
+    return index;
+}
+
+
