@@ -112,6 +112,7 @@ void test_get_data()
 
 void test_insert(){
 
+    cout << "Testing insert method" << endl;
     // empty 
     try{
         HashTable<int> ht0(0);
@@ -167,7 +168,7 @@ void test_insert(){
     }
 
 
-    // negative k
+    // negative k and collision
     try {
         HashTable<int> ht(5);
         ht.insert(111, -1);
@@ -183,6 +184,17 @@ void test_insert(){
         }
     } catch (exception& e) {
         cout << "Negative key: " << e.what() << "\n";
+    }
+
+    // negative data
+    try {
+        HashTable<int> ht(5);
+        ht.insert(-111, 2);
+        if (!ht.member(-111, 2)) {
+            cout << "Negative data should be stored and found\n";
+        }
+    } catch (exception& e) {
+        cout << "Negative data: " << e.what() << "\n";
     }
 
 
@@ -301,6 +313,8 @@ void test_insert(){
         if (got != exp) {
             cout << "Insert<long long> multi-bucket distribution\nGot:\n" << got << "\nExpected:\n" << exp << "\n";
         }
+
+        cout << "PASSED" << endl;
     } catch (exception& e) {
         cout << "long long insert: " << e.what() << "\n";
     }
@@ -317,7 +331,7 @@ void test_insert(){
 
 void test_remove()
 {
-
+    cout << "Testing remove method" << endl;
     // remove empty
     try {
         HashTable<int> ht0(0);
@@ -407,6 +421,24 @@ void test_remove()
     } catch (exception& e) {
         cout << "Remove negative key: " << e.what() << "\n";
     }
+
+
+    // data is negative
+    try {
+        HashTable<int> ht(5);
+        ht.insert(-11, 2);
+        if (!ht.member(-11, 2)) {
+            cout << "Negative data should be inserted first\n";
+        }
+        ht.remove(2);
+        if (ht.member(-11, 2)) {
+            cout << "Negative data should be removed\n";
+        }
+    } catch (exception& e) {
+        cout << "Remove negative data: " << e.what() << "\n";
+    }
+
+
 
 
     // remove same data two times but not crashing
@@ -571,6 +603,8 @@ void test_remove()
                 cout << "Remove<long long> last node leaves empty bucket\nGot:\n" << got << "\nExpected:\n" << exp << "\n";
             }
         }
+
+        cout << "PASSED" << endl;
     } catch (exception& e) {
         cout << "long long remove: " << e.what() << "\n";
     }
@@ -580,20 +614,6 @@ void test_remove()
 
 
 
-
-
-
-
-
-
-
-    
-   
-
-
-
-
-    
 
 
 // ============================================================================
