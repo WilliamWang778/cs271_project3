@@ -19,4 +19,4 @@ test_hashtable.o: test_hashtable.cpp usecase.cpp hash_table.cpp hash_table.h
 	g++ -c test_hashtable.cpp
 
 clean:
-	rm -f *.o hash test_hashtable_example
+	rm -f *.o hash test_hashtable_example test_hashtable
