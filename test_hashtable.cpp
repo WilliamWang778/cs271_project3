@@ -110,12 +110,88 @@ void test_get_data()
 
 void test_insert()
 {
-   
+    cout << "Testing HashTable insert()" << endl;
+    
+    try
+    {
+        // Insert into empty table which is size 0
 
+        HashTable<int> empty_ht(0);
 
+        empty_ht.insert(10, 6);
 
+        if (empty_ht.to_string() != "")
+        {
+            cout << "Incorrect result of inserting into empty table. Expected empty string but got:\n" << empty_ht.to_string() << endl;
+        }
+    }
+
+    catch (exception &e)
+    {
+        cout << "Error caused by trying to insert into empty table: " << e.what() << endl;
+    }
+    
+    try
+    {
+        // Single insert
+        HashTable<int> ht(5);
+        ht.insert(10, 6);
+        if (ht.to_string() != "0: \n1: (10,6) \n2: \n3: \n4: \n")
+        {
+            cout << "Incorrect result of inserting into table. Expected:\n0: \n1: (10,6) \n2: \n3: \n4: \n\nBut got:\n" << ht.to_string() << endl;
+        }
+        
+        // Insert with collision (chaining test)
+        ht.insert(1, 21);  // 21 % 5 = 1, collision with key 6
+        if (ht.to_string() != "0: \n1: (1,21) (10,6) \n2: \n3: \n4: \n")
+        {
+            cout << "Incorrect result of inserting with collision. Expected:\n0: \n1: (1,21) (10,6) \n2: \n3: \n4: \n\nBut got:\n" << ht.to_string() << endl;
+        }
+        
+        // Insert with negative key
+        HashTable<string> ht_neg(5);
+        ht_neg.insert("negative", -7);  // -7 % 5 = -2, then -2 + 5 = 3
+        if (!ht_neg.member("negative", -7))
+        {
+            cout << "Incorrect result of inserting negative key. Element not found in table" << endl;
+        }
+        
+        // Multiple inserts without collision
+        HashTable<string> ht_multi(10);
+        ht_multi.insert("first", 1);
+        ht_multi.insert("second", 2);
+        ht_multi.insert("third", 3);
+        if (!ht_multi.member("first", 1) || !ht_multi.member("second", 2) || !ht_multi.member("third", 3))
+        {
+            cout << "Incorrect result of multiple inserts without collision" << endl;
+        }
+        
+        // Insert with zero key
+        HashTable<int> ht_zero(5);
+        ht_zero.insert(999, 0);
+        if (ht_zero.to_string() != "0: (999,0) \n1: \n2: \n3: \n4: \n")
+        {
+            cout << "Incorrect result of inserting zero key. Expected:\n0: (999,0) \n1: \n2: \n3: \n4: \n\nBut got:\n" << ht_zero.to_string() << endl;
+        }
+        
+        // Multiple collisions in same slot
+        HashTable<string> ht_chain(5);
+        ht_chain.insert("first", 3);
+        ht_chain.insert("second", 8);   // 8 % 5 = 3
+        ht_chain.insert("third", 13);   // 13 % 5 = 3
+        if (ht_chain.to_string() != "0: \n1: \n2: \n3: (third,13) (second,8) (first,3) \n4: \n")
+        {
+            cout << "Incorrect result of multiple collisions. Expected:\n0: \n1: \n2: \n3: (third,13) (second,8) (first,3) \n4: \n\nBut got:\n" << ht_chain.to_string() << endl;
+        }
+        
+        cout << "PASSED" << endl;
+    }
+    
+    catch (exception &e)
+    {
+        cerr << "Error inserting into table: " << e.what() << endl;
+    }
 }
-
 
 
 
