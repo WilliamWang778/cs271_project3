@@ -1,4 +1,6 @@
 #include <iostream>
+#include <limits>
+#include <string>
 #include "usecase.cpp"
 
 
@@ -110,11 +112,208 @@ void test_get_data()
 
 void test_insert()
 {
+<<<<<<< Updated upstream
     cout << "Testing HashTable insert()" << endl;
     
     try
     {
         // Insert into empty table which is size 0
+=======
+
+    // empty 
+    try{
+        HashTable<int> ht0(0);
+        ht0.insert(120,678);
+        if (ht0.to_string()!= ""){
+            cout << "Insert into size=0 should keep empty string\nGot:\n" << ht0.to_string() << "\n";
+        }
+    } catch (exception& e){
+        cout << "Error caused by trying to insert into empty table : " << e.what() << endl;
+
+    }
+
+    // one insert
+    try {
+        HashTable<int> ht(5);
+        ht.insert(15, 6); 
+        string got = ht.to_string();
+        string exp = "0: \n1: (15,6) \n2: \n3: \n4: \n";
+        if (got != exp) {
+            cout << "Single insert\nGot:\n" << got << "\nExpected:\n" << exp << "\n";
+        }
+    } catch (exception& e) {
+        cout << "Single insert: " << e.what() << "\n";
+    }
+
+    // multiple insert in same bucket
+    try {
+        HashTable<int> ht(5);
+        ht.insert(15, 6);  
+        ht.insert(1, 21);  
+        string got = ht.to_string();
+        string exp = "0: \n1: (1,21) (15,6) \n2: \n3: \n4: \n";
+        if (got != exp) {
+            cout << "Collision and head-insert order\nGot:\n" << got << "\nExpected:\n" << exp << "\n";
+        }
+    } catch (exception& e) {
+        cout << "Collisions and head-insert: " << e.what() << "\n";
+    }
+
+    // multiple insert
+    try {
+        HashTable<int> ht(5);
+        ht.insert(100, 0);  
+        ht.insert(200, 2);   
+        ht.insert(300, 4);   
+        string got = ht.to_string();
+        string exp = "0: (100,0) \n1: \n2: (200,2) \n3: \n4: (300,4) \n";
+        if (got != exp) {
+            cout << "Multiple buckets distribution\nGot:\n" << got << "\nExpected:\n" << exp << "\n";
+        }
+    } catch (exception& e) {
+        cout << "Multiple bucket: " << e.what() << "\n";
+    }
+
+
+    // negative k
+    try {
+        HashTable<int> ht(5);
+        ht.insert(111, -1);
+        if (!ht.member(111, -1)) {
+            cout << "Negative key should be stored and found\n";
+        }
+        ht.insert(1, 0);
+        ht.insert(2, 5);
+        ht.insert(3, 10);
+        string s = ht.to_string();
+        if (s.find("0: (3,10) (2,5) (1,0) ") == string::npos) {
+            cout << "Collision order with negatives not as expected.\nGot:\n" << s << "\n";
+        }
+    } catch (exception& e) {
+        cout << "Negative key: " << e.what() << "\n";
+    }
+
+
+    // k is INT_MAX
+    try {
+        HashTable<int> ht(7);
+        int MaxNum = std::numeric_limits<int>::max();
+        ht.insert(99, MaxNum);
+        if (!ht.member(99, MaxNum)) {
+            cout << "Large key should be found\n";
+        }
+    } catch (exception& e) {
+        cout << "Large key: " << e.what() << "\n";
+    }
+
+
+    // insert string
+    try {
+        HashTable<string> hs(5);
+        hs.insert(string("alpha"), 6); 
+        string got = hs.to_string();
+        string exp = "0: \n1: (alpha,6) \n2: \n3: \n4: \n";
+        if (got != exp) {
+            cout << "Insert string data\nGot:\n" << got << "\nExpected:\n" << exp << "\n";
+        }
+    } catch (exception& e) {
+        cout << "String data insert: " << e.what() << "\n";
+    }
+
+
+    // same k
+    try {
+        HashTable<int> ht(5);
+        ht.insert(111, 8);
+        ht.insert(222, 8); 
+        string got = ht.to_string();
+        if (got.find("3: (222,8) (111,8) ") == string::npos) {
+            cout << "Duplicate key inserts should appear head-first in same bucket\nGot:\n" << got << "\n";
+        }
+    } catch (exception& e) {
+        cout << "Duplicate-key insert: " << e.what() << "\n";
+    }
+
+
+    // insert float
+    try {
+        HashTable<float> hf(5);
+        hf.insert(1.55, 6); 
+        string got = hf.to_string();
+        string exp = "0: \n1: (1.55,6) \n2: \n3: \n4: \n";
+        if (got != exp) {
+            cout << "Insert<float> basic\nGot:\n" << got << "\nExpected:\n" << exp << "\n";
+        }
+
+       
+        hf.insert(3.25, 11); 
+        got = hf.to_string();
+        exp = "0: \n1: (3.25,11) (1.55,6) \n2: \n3: \n4: \n";
+        if (got != exp) {
+            cout << "Insert<float> collision head-insert order\nGot:\n" << got << "\nExpected:\n" << exp << "\n";
+        }
+    } catch (exception& e) {
+        cout << "Float insert: " << e.what() << "\n";
+    }
+
+
+    // insert bool
+
+    try {
+        HashTable<bool> hb(3);
+        hb.insert(true, 4);  
+        string got = hb.to_string();
+        string exp = "0: \n1: (1,4) \n2: \n";
+        if (got != exp){
+            cout << "Insert<bool> basic\nGot:\n" << got << "\nExpected:\n" << exp << "\n";
+        }
+
+        hb.insert(false, 7); 
+        got = hb.to_string();
+        exp = "0: \n1: (0,7) (1,4) \n2: \n";
+        if (got != exp) {
+            cout << "Insert<bool> collision head-insert order\nGot:\n" << got << "\nExpected:\n" << exp << "\n";
+        }
+    } catch (exception& e) {
+        cout << "Bool insert: " << e.what() << "\n";
+    }
+
+
+    // insert long long
+    try {
+        HashTable<long long> hl(4);
+        hl.insert(900000000000LL, 6); 
+        string got = hl.to_string();
+        string exp = "0: \n1: \n2: (900000000000,6) \n3: \n";
+        if (got != exp) {
+            cout << "Insert<long long> basic\nGot:\n" << got << "\nExpected:\n" << exp << "\n";
+        }
+
+     
+        hl.insert(800000000000LL, 10); 
+        got = hl.to_string();
+        exp = "0: \n1: \n2: (800000000000,10) (900000000000,6) \n3: \n";
+        if (got != exp) {
+            cout << "Insert<long long> collision head-insert order\nGot:\n" << got << "\nExpected:\n" << exp << "\n";
+        }
+
+        
+        hl.insert(700000000000LL, 1); 
+        hl.insert(600000000000LL, 3); 
+        got = hl.to_string();
+        exp =
+            "0: \n"
+            "1: (700000000000,1) \n"
+            "2: (800000000000,10) (900000000000,6) \n"
+            "3: (600000000000,3) \n";
+        if (got != exp) {
+            cout << "Insert<long long> multi-bucket distribution\nGot:\n" << got << "\nExpected:\n" << exp << "\n";
+        }
+    } catch (exception& e) {
+        cout << "long long insert: " << e.what() << "\n";
+    }
+
+>>>>>>> Stashed changes
 
         HashTable<int> empty_ht(0);
 
@@ -192,6 +391,11 @@ void test_insert()
         cerr << "Error inserting into table: " << e.what() << endl;
     }
 }
+   
+
+
+
+
 
 
 
@@ -199,10 +403,282 @@ void test_insert()
 void test_remove()
 {
 
+    // remove empty
+    try {
+        HashTable<int> ht0(0);
+        ht0.remove(123);
+        if (ht0.to_string() != "") {
+            cout << "Remove on size=0 should keep empty string\nGot:\n"
+                 << ht0.to_string() << "\n";
+        }
+    } catch (exception& e) {
+        cout << "Remove on size=0: " << e.what() << "\n";
+    }
+
+    // remove non-member
+    try {
+        HashTable<int> ht(5);
+        ht.insert(15, 6);
+        ht.remove(5); 
+        string got = ht.to_string();
+        string exp = "0: \n1: (15,6) \n2: \n3: \n4: \n";
+        if (got != exp) {
+            cout << "Remove non-member should not change table\nGot:\n" << got << "\nExpected:\n" << exp << "\n";
+        }
+    } catch (exception& e) {
+        cout << "Remove non-member: " << e.what() << "\n";
+    }
+
+
+    // remove head
+    try {
+        HashTable<int> ht(5);
+        ht.insert(15, 6); 
+        ht.remove(6);
+        string got = ht.to_string();
+        string exp = "0: \n1: \n2: \n3: \n4: \n";
+        if (got != exp) {
+            cout << "Remove head as single node\nGot:\n" << got << "\nExpected:\n" << exp << "\n";
+        }
+    } catch (exception& e) {
+        cout << "Remove single head: " << e.what() << "\n";
+    }
+
+
+
+    // remove head, tail and then the middle one
+    try {
+        HashTable<int> ht(5);
+        ht.insert(100, 1);   
+        ht.insert(200, 6);   
+        ht.insert(300, 31); 
+        
+        ht.remove(31);
+        string got1 = ht.to_string();
+        string exp1 = "0: \n1: (200,6) (100,1) \n2: \n3: \n4: \n";
+        if (got1 != exp1) {
+            cout << "Remove head of chain\nGot:\n" << got1 << "\nExpected:\n" << exp1 << "\n";
+        }
+        
+        ht.remove(1);
+        string got2 = ht.to_string();
+        string exp2 = "0: \n1: (200,6) \n2: \n3: \n4: \n";
+        if (got2 != exp2) {
+            cout << "Remove tail of chain\nGot:\n" << got2 << "\nExpected:\n" << exp2 << "\n";
+        }
+        
+        ht.remove(6);
+        string got3 = ht.to_string();
+        string exp3 = "0: \n1: \n2: \n3: \n4: \n";
+        if (got3 != exp3) {
+            cout << "Remove last node leaves empty bucket\nGot:\n" << got3 << "\nExpected:\n" << exp3 << "\n";
+        }
+    } catch (exception& e) {
+        cout << "Remove head/middle/tail: " << e.what() << "\n";
+    }
+
+
+    // k is negative
+    try {
+        HashTable<int> ht(5);
+        ht.insert(111, -1);
+        if (!ht.member(111, -1)) {
+            cout << "Negative key should be inserted first\n";
+        }
+        ht.remove(-1);
+        if (ht.member(111, -1)) {
+            cout << "Negative key should be removed\n";
+        }
+    } catch (exception& e) {
+        cout << "Remove negative key: " << e.what() << "\n";
+    }
+
+
+    // remove same data two times but not crashing
+    try {
+        HashTable<int> ht(3);
+        ht.insert(5, 0);
+        ht.remove(0);   
+        ht.remove(0);  
+        string got = ht.to_string();
+        string exp = "0: \n1: \n2: \n";
+        if (got != exp) {
+            cout << "Double remove should be safe no operation the second time\nGot:\n" << got << "\nExpected:\n" << exp << "\n";
+        }
+    } catch (exception& e) {
+        cout << "Double remove: " << e.what() << "\n";
+    }
+
+
+    // remove INT_MAX key
+    try {
+        HashTable<int> ht(7);
+        int NumMax = std::numeric_limits<int>::max();
+        ht.insert(42, NumMax);
+        if (!ht.member(42, NumMax)) {
+            cout << "Large key should be found before remove\n";
+        }
+        ht.remove(NumMax);
+        if (ht.member(42, NumMax)) {
+            cout << "Large key should not be found after remove\n";
+        }
+    } catch (exception& e) {
+        cout << "Remove large key: " << e.what() << "\n";
+    }
+
+    // remove when data is string
+    try {
+        HashTable<string> hs(5);
+        hs.insert("hello", 6);
+        hs.insert("world", 6); 
+        hs.remove(6);          
+        string got = hs.to_string();
+        string exp = "0: \n1: (hello,6) \n2: \n3: \n4: \n";
+        if (got != exp) {
+            cout << "Remove with string data preserves remaining\nGot:\n" << got << "\nExpected:\n" << exp << "\n";
+        }
+    } catch (exception& e) {
+        cout << "Remove string data: " << e.what() << "\n";
+    }
+
+
+
+    // remove data is float
+    try {
+        HashTable<float> hf(5);
+        hf.insert(1.55, 6);    
+        hf.insert(3.25, 11);  
+        hf.remove(11);
+        {
+            string got = hf.to_string();
+            string exp = "0: \n1: (1.55,6) \n2: \n3: \n4: \n";
+            if (got != exp) {
+                cout << "Remove<float> head\nGot:\n" << got << "\nExpected:\n" << exp << "\n";
+            }
+        }
+
+        
+        hf.remove(6);
+        {
+            string got = hf.to_string();
+            string exp = "0: \n1: \n2: \n3: \n4: \n";
+            if (got != exp) {
+                cout << "Remove<float> last node leaves empty bucket\nGot:\n" << got << "\nExpected:\n" << exp << "\n";
+            }
+        }
+    } catch (exception& e) {
+        cout << "Float remove: " << e.what() << "\n";
+    }
+
+
+    // remove when data is bool
+    try {
+        HashTable<bool> hb(3);
+        hb.insert(true, 4);   
+        hb.insert(false, 7);  
+
+        hb.remove(7);
+        {
+            string got = hb.to_string();
+            string exp = "0: \n1: (1,4) \n2: \n";
+            if (got != exp) {
+                cout << "Remove<bool> head\nGot:\n" << got << "\nExpected:\n" << exp << "\n";
+            }
+        }
+
+        hb.remove(4);
+        {
+            string got = hb.to_string();
+            string exp = "0: \n1: \n2: \n";
+            if (got != exp) {
+                cout << "Remove<bool> last node leaves empty bucket\nGot:\n" << got << "\nExpected:\n" << exp << "\n";
+            }
+        }
+    } catch (exception& e) {
+        cout << "Bool remove: " << e.what() << "\n";
+    }
+
+
+    // remove when data is long long
+    try {
+        HashTable<long long> hl(4);
+        hl.insert(1000000000000LL, 2);   
+        hl.insert(2000000000000LL, 6);   
+        hl.insert(3000000000000LL, 10);  
+
+        {
+            string got = hl.to_string();
+            string exp =
+                "0: \n"
+                "1: \n"
+                "2: (3000000000000,10) (2000000000000,6) (1000000000000,2) \n"
+                "3: \n";
+            if (got != exp) {
+                cout << "Setup<long long> initial chain order\nGot:\n" << got << "\nExpected:\n" << exp << "\n";
+            }
+        }
+
+        hl.remove(10);
+        {
+            string got = hl.to_string();
+            string exp =
+                "0: \n"
+                "1: \n"
+                "2: (2000000000000,6) (1000000000000,2) \n"
+                "3: \n";
+            if (got != exp) {
+                cout << "Remove<long long> head\nGot:\n" << got << "\nExpected:\n" << exp << "\n";
+            }
+        }
+
+        hl.remove(2);
+        {
+            string got = hl.to_string();
+            string exp =
+                "0: \n"
+                "1: \n"
+                "2: (2000000000000,6) \n"
+                "3: \n";
+            if (got != exp) {
+                cout << "Remove<long long> tail\nGot:\n" << got << "\nExpected:\n" << exp << "\n";
+            }
+        }
+
+        hl.remove(6);
+        {
+            string got = hl.to_string();
+            string exp =
+                "0: \n"
+                "1: \n"
+                "2: \n"
+                "3: \n";
+            if (got != exp) {
+                cout << "Remove<long long> last node leaves empty bucket\nGot:\n" << got << "\nExpected:\n" << exp << "\n";
+            }
+        }
+    } catch (exception& e) {
+        cout << "long long remove: " << e.what() << "\n";
+    }
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
 
     
    
-}
+
 
 
 
