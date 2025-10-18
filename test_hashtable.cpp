@@ -593,36 +593,8 @@ void test_remove()
 
 
 
-
-
-
-void test_member()
-{
     
 
-
-
-
-
-
-}
-
-
-
-
-
-
-
-void test_login()
-{
-    
-
-
-
-
-
-
-}
 
 // ============================================================================
 // Test Cases for member() Method
@@ -976,6 +948,11 @@ void test_to_string_large_collision_chain() {
 
 
 
+void test_login(){
+
+}
+
+
 int main()
 {
     string file_name = "usecase.cpp";
@@ -987,7 +964,7 @@ int main()
     test_get_data();
     test_insert();
     test_remove();
-    test_member();
+    
     test_login();
 
     cout << "\n member method tests" << endl;
