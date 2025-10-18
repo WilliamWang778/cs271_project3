@@ -17,6 +17,14 @@ Precondition: Valid data and key provided
 Postcondition: Element created with data and key, next and prev pointers initialized to nullptr
 */
 
+template <typename T> 
+
+Element<T> :: Element(){
+    this -> data = T();
+    this -> k = -1;
+    this -> next = nullptr;
+    this -> prev = nullptr;
+}
 template<typename T>
 Element<T>::Element(const T& data, int k){
     this -> data = data;
@@ -67,6 +75,9 @@ index = (k mod size) + size (if k mod size < 0)
 
 template<typename T>
 int HashTable<T>::h(int k) const {
+    if (size == 0){
+        return 0;
+    }
     int index = k % size;
     if (index < 0){
         index = index + size;
@@ -88,7 +99,10 @@ template <typename T>
 HashTable<T>::HashTable(int m){
 
     if (m <= 0){
-        m = 1;
+        this -> size = 0;
+        this -> n = 0;
+        this -> table = nullptr;
+        return;
     }
 
     this -> size = m;
@@ -108,7 +122,9 @@ Postcondition: HashTable and all its Elements are properly deallocated
 
 template<typename T>
 HashTable<T>::~HashTable(){
-   
+    if (size == 0 || table == nullptr){
+        return;
+    }
     for (int i = 0; i < size; i++){
         Element<T>* current = table[i];
         while (current != nullptr){
@@ -128,9 +144,10 @@ Postcondition: Element with data and key inserted at the head of the chain at in
 
 template <typename T>
 void HashTable<T> :: insert(T data, int k){
-    
+    if (size == 0 || table == nullptr){
+        return;
+    }
     int index = h(k);
-
     Element<T>* node = new Element<T>(data, k);
 
     node -> prev = nullptr;
@@ -153,6 +170,9 @@ Postcondition: Element with given key removed if it exists
 
 template <typename T>
 void HashTable<T> :: remove (int k){
+    if (size == 0 || table == nullptr){
+        return;
+    }
     int index = h(k);
     Element<T>* current = table[index];
     while (current != nullptr){
@@ -183,12 +203,15 @@ Postcondition: Returns true if element with data and key, false otherwise
 */
 template<typename T>
 bool HashTable<T>::member(T data, int k) {
+    if (size == 0 || table == nullptr){
+        return false;
+    }
     int index = h(k);
     Element<T>* current = table[index];
     
     // Traverse the chain at this index
     while (current != nullptr) {
-        if (current->get_key() == key && current->get_data() == data) {
+        if (current->get_key() == k && current->get_data() == data) {
             return true;
         }
         current = current->next;
@@ -203,10 +226,13 @@ Postcondition: Returns string representation of the hash table
 */
 template<typename T>
 string HashTable<T>::to_string() {
+    if (size == 0 || table == nullptr){
+        return "";
+    }
     stringstream ss;
     
     for (int i = 0; i < size; i++) {
-        ss << i << ":";
+        ss << i << ": ";
         
         Element<T>* current = table[i];
         bool first = true;

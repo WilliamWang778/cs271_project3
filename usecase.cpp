@@ -32,6 +32,7 @@ Parameters: string fname - filename of CSV, int m - size of hash table
 Precondition: fname is valid filename, m > 0
 Postcondition: returns pointer to HashTable containing username/password pairs
 */
+template <typename T>
 HashTable<string>* create_table(string fname, int m) {
     HashTable<string>* ht = new HashTable<string>(m);
     
@@ -64,7 +65,7 @@ HashTable<string>* create_table(string fname, int m) {
             
             // Store username as data and password hash as key
             int passKey = passwordHash(password);
-            ht->insert(username, passKey);
+            ht->insert(static_cast<T>(username), passKey);
         }
     }
     
@@ -79,6 +80,7 @@ Parameters: HashTable<string>* ht - the hash table, string username - username t
 Precondition: ht is a valid hash table pointer
 Postcondition: returns true if username/password pair exists, false otherwise
 */
+
 bool login(HashTable<string>* ht, string username, string password) {
     if (ht == nullptr) {
         return false;

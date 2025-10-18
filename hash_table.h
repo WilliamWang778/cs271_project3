@@ -20,7 +20,7 @@ public:
 
     Element<T>* next; 
     Element<T>* prev; 
-    
+    Element();  
     Element(const T& data, int k); 
     ~Element(); 
 
