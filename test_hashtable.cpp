@@ -2,7 +2,7 @@
 #include <limits>
 #include <string>
 #include "usecase.cpp"
-
+#include <cassert>
 
 using namespace std;
 
