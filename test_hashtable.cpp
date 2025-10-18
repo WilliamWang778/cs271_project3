@@ -5,9 +5,6 @@
 using namespace std;
 
 
-
-
-
 void test_get_key()
 {
   cout << "Testing Element get_key()" << endl;
@@ -53,16 +50,61 @@ void test_get_key()
 
 
 
-
 void test_get_data()
 {
- 
-
-
-
+    cout << "Testing Element get_data()" << endl;
+    
+    try
+    {
+        // Default Constructor - int
+        Element<int> element_empty_int;
+        if (element_empty_int.get_data() != 0)
+        {
+            cout << "Incorrect result from get data. Expected 0 for an empty element but got: " << element_empty_int.get_data() << endl;
+        }
+        
+        // Positive data - int
+        Element<int> element_int(10, 6);
+        if (element_int.get_data() != 10)
+        {
+            cout << "Incorrect result from get data. Expected 10 but got: " << element_int.get_data() << endl;
+        }
+        
+        // String data
+        Element<string> element_string("LukasWilliamFlynn", 69);
+        if (element_string.get_data() != "LukasWilliamFlynn")
+        {
+            cout << "Incorrect result from get data. Expected 'LukasWilliamFlynn' but got: " << element_string.get_data() << endl;
+        }
+        
+        // Empty string data
+        Element<string> element_empty_string("", 74);
+        if (element_empty_string.get_data() != "")
+        {
+            cout << "Incorrect result from get data. Expected empty string but got: " << element_empty_string.get_data() << endl;
+        }
+        
+        // Double data
+        Element<double> element_double(3.14159, 18);
+        if (element_double.get_data() != 3.14159)
+        {
+            cout << "Incorrect result from get data. Expected 3.14159 but got: " << element_double.get_data() << endl;
+        }
+        
+        // Negative data - int
+        Element<int> element_negative(-999, 3);
+        if (element_negative.get_data() != -999)
+        {
+            cout << "Incorrect result from get data. Expected -999 but got: " << element_negative.get_data() << endl;
+        }
+        
+        cout << "PASSED" << endl;
+    }
+    catch (exception &e)
+    {
+        cerr << "Error getting data from element: " << e.what() << endl;
+    }
 }
-
-
 
 
 
@@ -118,9 +160,6 @@ void test_login()
 
 
 }
-
-
-
 
 
 
