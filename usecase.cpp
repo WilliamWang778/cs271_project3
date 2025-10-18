@@ -80,7 +80,7 @@ Parameters: HashTable<string>* ht - the hash table, string username - username t
 Precondition: ht is a valid hash table pointer
 Postcondition: returns true if username/password pair exists, false otherwise
 */
-template <typename T>
+
 bool login(HashTable<string>* ht, string username, string password) {
     if (ht == nullptr) {
         return false;
