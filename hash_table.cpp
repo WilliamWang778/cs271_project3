@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 #include "hash_table.h"
 
 using namespace std;
@@ -235,20 +236,18 @@ string HashTable<T>::to_string() {
         ss << i << ": ";
         
         Element<T>* current = table[i];
-        bool first = true;
+        
         
         while (current != nullptr) {
-            if (!first) {
-                ss << " ";
-            }
-            ss << "(" << current->get_data() << "," << current->get_key() << ")";
-            first = false;
+           
+            ss << "(" << current->get_data() << "," << current->get_key() << ") ";
+         
             current = current->next;
         }
         
-        if (i < size - 1) {
-            ss << "\n";
-        }
+        
+        ss << "\n";
+        
     }
     
     return ss.str();
