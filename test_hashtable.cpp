@@ -968,9 +968,206 @@ void test_to_string_large_collision_chain() {
 
 
 
-void test_login(){
+// ============================================================================
+// Test Cases for login() and create_table() functions
+// ============================================================================
 
+/**
+ * Test: test_login_valid_credentials
+ * Pre-condition: HashTable created from logins.csv with valid username/password pair
+ * Post-condition: login returns true for correct credentials
+ */
+void test_login_valid_credentials() {
+    try {
+        HashTable<string> *ht = create_table<string>("logins.csv", 10);
+        
+        string username = "IEv";
+        string password = "7170790290";
+        
+        assert(login(ht, username, password) == true);
+        cout << "test_login_valid_credentials passed" << endl;
+    }
+    catch (exception &e) {
+        cerr << "Error in test_login_valid_credentials: " << e.what() << endl;
+        assert(false);
+    }
 }
+
+/**
+ * Test: test_login_invalid_username
+ * Pre-condition: HashTable created from logins.csv with invalid username
+ * Post-condition: login returns false for non-existent username
+ */
+void test_login_invalid_username() {
+    try {
+        HashTable<string> *ht = create_table<string>("logins.csv", 10);
+        
+        string username = "bad-user";
+        string password = "98213873";
+        
+        assert(login(ht, username, password) == false);
+        cout << "test_login_invalid_username passed" << endl;
+    }
+    catch (exception &e) {
+        cerr << "Error in test_login_invalid_username: " << e.what() << endl;
+        assert(false);
+    }
+}
+
+/**
+ * Test: test_login_invalid_password
+ * Pre-condition: HashTable created from logins.csv with valid username but wrong password
+ * Post-condition: login returns false for incorrect password
+ */
+void test_login_invalid_password() {
+    try {
+        HashTable<string> *ht = create_table<string>("logins.csv", 10);
+        
+        // Use valid username with incorrect password
+        string username = "IEv";
+        string password = "0000000000";  // Wrong password
+        
+        assert(login(ht, username, password) == false);
+        cout << "test_login_invalid_password passed" << endl;
+    }
+    catch (exception &e) {
+        cerr << "Error in test_login_invalid_password: " << e.what() << endl;
+        assert(false);
+    }
+}
+
+/**
+ * Test: test_login_empty_username
+ * Pre-condition: HashTable created from logins.csv with empty username
+ * Post-condition: login returns false for empty username
+ */
+void test_login_empty_username() {
+    try {
+        HashTable<string> *ht = create_table<string>("logins.csv", 10);
+        
+        string username = "";
+        string password = "7170790290";
+        
+        assert(login(ht, username, password) == false);
+        cout << "test_login_empty_username passed" << endl;
+    }
+    catch (exception &e) {
+        cerr << "Error in test_login_empty_username: " << e.what() << endl;
+        assert(false);
+    }
+}
+
+/**
+ * Test: test_login_empty_password
+ * Pre-condition: HashTable created from logins.csv with valid username but empty password
+ * Post-condition: login returns false for empty password
+ */
+void test_login_empty_password() {
+    try {
+        HashTable<string> *ht = create_table<string>("logins.csv", 10);
+        
+        string username = "IEv";
+        string password = "";
+        
+        assert(login(ht, username, password) == false);
+        cout << "test_login_empty_password passed" << endl;
+    }
+    catch (exception &e) {
+        cerr << "Error in test_login_empty_password: " << e.what() << endl;
+        assert(false);
+    }
+}
+
+/**
+ * Test: test_login_multiple_users
+ * Pre-condition: HashTable created from logins.csv with multiple valid users
+ * Post-condition: login correctly validates different user credentials
+ */
+void test_login_multiple_users() {
+    try {
+        HashTable<string> *ht = create_table<string>("logins.csv", 10);
+        
+        // Test multiple valid credentials
+        assert(login(ht, "IEv", "7170790290") == true);
+        assert(login(ht, "bad-user", "98213873") == false);
+        assert(login(ht, "unknown", "0000000000") == false);
+        
+        cout << "test_login_multiple_users passed" << endl;
+    }
+    catch (exception &e) {
+        cerr << "Error in test_login_multiple_users: " << e.what() << endl;
+        assert(false);
+    }
+}
+
+/**
+ * Test: test_create_table_file_loading
+ * Pre-condition: logins.csv file exists with username/password pairs
+ * Post-condition: create_table loads all users into hash table with correct size
+ */
+void test_create_table_file_loading() {
+    try {
+        int table_size = 10;
+        HashTable<string> *ht = create_table<string>("logins.csv", table_size);
+        
+        // Verify table can find known entry
+        assert(login(ht, "IEv", "7170790290") == true);
+        
+        cout << "test_create_table_file_loading passed" << endl;
+    }
+    catch (exception &e) {
+        cerr << "Error in test_create_table_file_loading: " << e.what() << endl;
+        assert(false);
+    }
+}
+
+/**
+ * Test: test_create_table_different_sizes
+ * Pre-condition: logins.csv file exists
+ * Post-condition: create_table works correctly with different hash table sizes
+ */
+void test_create_table_different_sizes() {
+    try {
+        // Test with different table sizes
+        HashTable<string> *ht1 = create_table<string>("logins.csv", 5);
+        assert(login(ht1, "IEv", "7170790290") == true);
+        
+        HashTable<string> *ht2 = create_table<string>("logins.csv", 20);
+        assert(login(ht2, "IEv", "7170790290") == true);
+        
+        HashTable<string> *ht3 = create_table<string>("logins.csv", 100);
+        assert(login(ht3, "IEv", "7170790290") == true);
+        
+        cout << "test_create_table_different_sizes passed" << endl;
+    }
+    catch (exception &e) {
+        cerr << "Error in test_create_table_different_sizes: " << e.what() << endl;
+        assert(false);
+    }
+}
+
+/**
+ * Test: test_login_case_sensitivity
+ * Pre-condition: HashTable created from logins.csv
+ * Post-condition: login is case-sensitive for username
+ */
+void test_login_case_sensitivity() {
+    try {
+        HashTable<string> *ht = create_table<string>("logins.csv", 10);
+        
+        // Assuming "IEv" exists, different case should fail
+        assert(login(ht, "IEv", "7170790290") == true);
+        assert(login(ht, "iev", "7170790290") == false);
+        assert(login(ht, "IEV", "7170790290") == false);
+        
+        cout << "test_login_case_sensitivity passed" << endl;
+    }
+    catch (exception &e) {
+        cerr << "Error in test_login_case_sensitivity: " << e.what() << endl;
+        assert(false);
+    }
+}
+
 
 
 int main()
@@ -1009,6 +1206,17 @@ int main()
     test_to_string_integer_data_type();
     test_to_string_large_collision_chain();
 
+    cout << "\nlogin() function tests" << endl;
+    test_login_valid_credentials();
+    test_login_invalid_username();
+    test_login_invalid_password();
+    test_login_empty_username();
+    test_login_empty_password();
+    test_login_multiple_users();
+    test_create_table_file_loading();
+    test_create_table_different_sizes();
+    test_login_case_sensitivity();
+  
     cout << "Testing completed" << endl;
 
     return 0;
