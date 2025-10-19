@@ -99,16 +99,19 @@ Postcondition: HashTable created with m slots, it is initialized to be empty
 template <typename T>
 HashTable<T>::HashTable(int m){
 
+    // if size of table is smaller or equal to 0, we create a hash table with size and n to 0
     if (m <= 0){
         this -> size = 0;
         this -> n = 0;
         this -> table = nullptr;
         return;
     }
-
+    // give value to size, size = m
     this -> size = m;
+    // n at first is 0
     this -> n = 0;
 
+    // create the new hash table for the specific size
     table = new Element<T>*[this -> size]();
 
 }
@@ -123,17 +126,23 @@ Postcondition: HashTable and all its Elements are properly deallocated
 
 template<typename T>
 HashTable<T>::~HashTable(){
+
+    // if size is 0, table is nullptr, do nothing.
     if (size == 0 || table == nullptr){
         return;
     }
+    // walk through each bucket
     for (int i = 0; i < size; i++){
+        // save next before deleting current
         Element<T>* current = table[i];
+        // delete all nodes in this bucket's doubly linked list.
         while (current != nullptr){
             Element<T>* next = current -> next;
             delete current;
             current = next;
         }
     }
+    // free the array of bucket heads.
     delete[] table;
 }
 
@@ -145,19 +154,25 @@ Postcondition: Element with data and key inserted at the head of the chain at in
 
 template <typename T>
 void HashTable<T> :: insert(T data, int k){
+    // if size is 0, table is nullptr, do nothing.
     if (size == 0 || table == nullptr){
         return;
     }
+    // compute bucket index via h(k). 
     int index = h(k);
+    // allocate a new node for (data, key)
     Element<T>* node = new Element<T>(data, k);
 
+    // insert at head of the bucket's doubly linked list.
     node -> prev = nullptr;
     node -> next = table[index];
-    
+
+    // if the current head exists, fix its prev pointer to the new node.
     if (table[index] != nullptr){
         table[index] -> prev = node;
     }
     
+    // update 
     table[index] = node;
     
     this->n += 1;
