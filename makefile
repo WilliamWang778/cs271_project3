@@ -1,9 +1,9 @@
-make: hash test
+make: hash test test_hashtable
 
 hash: main.o
 	g++ main.o -o hash
 
-test: test_hashtable_example.o
+test: test_hashtable_example.o 
 	g++ test_hashtable_example.o -o test_hashtable_example
 
 test_hashtable: test_hashtable.o
