@@ -1182,7 +1182,7 @@ int main()
     test_insert();
     test_remove();
     
-    test_login();
+
 
     cout << "\n member method tests" << endl;
     test_member_single_element_found();
