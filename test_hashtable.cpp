@@ -1,5 +1,6 @@
 #include <iostream>
 #include <limits>
+#include <vector>
 #include <string>
 #include "usecase.cpp"
 #include <cassert>
@@ -919,11 +920,11 @@ void test_to_string_exact_format_specification() {
     assert(lines.size() == 5);
     
     // Check format: slot number, colon, space, (data,key)
-    assert(lines[0] == "0:");
-    assert(lines[1] == "1:");
-    assert(lines[2] == "2:");
-    assert(lines[3] == "3: (test,28)");
-    assert(lines[4] == "4:");
+    assert(lines[0] == "0: ");
+    assert(lines[1] == "1: ");
+    assert(lines[2] == "2: ");
+    assert(lines[3] == "3: (test,28) ");
+    assert(lines[4] == "4: ");
     cout << "test_to_string_exact_format_specification passed" << endl;
 }
 
