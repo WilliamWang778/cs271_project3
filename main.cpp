@@ -11,11 +11,10 @@ This file demonstrates the usecase implementation of a hash table based login sy
 It shows the funtionality of the create_table and login functions defined on usecase.cpp.
 
 Functionality:
-1. It creates a hash table from a CSV file containing username and password pairs.
-2. Performs automated test cases to verify login functionality:
+1. Performs automated test cases to verify login functionality:
 - Tests a valid username-password combination
 - Tests an invalid username-password combination
-3. Provides an interactive terminal interface for user login attempts
+2. Provides an interactive terminal interface for user login attempts
 
 Input :
 - CSV file "logins.csv" with username,password pairs
@@ -38,15 +37,17 @@ int main(){
         cerr << "Failed to create hash table.\n";
         return 1;
     }
-
+    // set the username and password we want to test with, one is granted, another is denied.
     string username1 = "EaQrMZZQisY";
     string password1 = "2091698288";
     string username2 = "fake-user";
     string password2 = "1122334455";
 
+    // set two boolean variables to call login method
     bool check1 = login(ht, username1, password1);
     bool check2 = login(ht, username2, password2);
 
+    // check if they are granted ot denied
     if (check1) {
         cout << "(" << username1 << "," << password1 << ") : granted\n";
     } else {
@@ -59,6 +60,7 @@ int main(){
         cout << "(" << username2 << "," << password2 << ") : denied\n";
     }
 
+    // print out the login interative page
     cout << "\n=== Login ===\n";
     cout << "Enter username: ";
     string user;
@@ -74,6 +76,7 @@ int main(){
         cout << "Access denied\n";
     }
 
+    // delete the hastable
     delete ht;
     return 0;
 }

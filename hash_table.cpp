@@ -21,7 +21,9 @@ Postcondition: Element created with data and key, next and prev pointers initial
 template <typename T> 
 
 Element<T> :: Element(){
+    // int = 0, set string -> ""
     this -> data = T();
+    // set k = -1
     this -> k = -1;
     this -> next = nullptr;
     this -> prev = nullptr;
@@ -75,15 +77,15 @@ H function
 Parameters: int k is the key
 Precondition: HashTable exists
 Postcondition: returns index in tabl for given key k
- // index = k mod size (when k mod size >= 0)
- // index = (k mod size) + size (when k mod size < 0)
 */
 
 template<typename T>
 int HashTable<T>::h(int k) const {
+    // if empty buckets, return 0.
     if (size == 0){
         return 0;
     }
+    // compute k mod size. fix negatives so result is in [0, size-1].
     int index = k % size;
     if (index < 0){
         index = index + size;
@@ -175,9 +177,9 @@ void HashTable<T> :: insert(T data, int k){
         table[index] -> prev = node;
     }
     
-    // update 
+    // update bucket head, change it to node
     table[index] = node;
-    
+    // update n
     this->n += 1;
 }
 
@@ -189,24 +191,31 @@ Postcondition: Element with given key removed if it exists
 
 template <typename T>
 void HashTable<T> :: remove (int k){
+    // if size is 0, table is nullptr, do nothing.
     if (size == 0 || table == nullptr){
         return;
     }
+    // find the bucket for key k.
     int index = h(k);
     Element<T>* current = table[index];
     while (current != nullptr){
         if (current->get_key() == k){
+            // relink previous node over current.
             if (current -> prev != nullptr){
                 current -> prev -> next = current -> next;
             }
             else{
+                // delete the head: move bucket head to next.
                 table[index] = current -> next;
             }
 
+            // relink next node back to previous.
             if (current -> next != nullptr){
                 current -> next -> prev = current -> prev;
             }
+            // free the removed node
             delete current;
+            // update number of elemens
             n -= 1;
             return;
         }
@@ -222,14 +231,17 @@ Postcondition: Returns true if element with data and key, false otherwise
 */
 template<typename T>
 bool HashTable<T>::member(T data, int k) {
+    // if size is 0, table is nullptr, do nothing.
     if (size == 0 || table == nullptr){
         return false;
     }
+    // find the bucket for key k.
     int index = h(k);
     Element<T>* current = table[index];
     
     // Traverse the chain at this index
     while (current != nullptr) {
+        // match requires both key and data to be equal.
         if (current->get_key() == k && current->get_data() == data) {
             return true;
         }
@@ -245,25 +257,24 @@ Postcondition: Returns string representation of the hash table
 */
 template<typename T>
 string HashTable<T>::to_string() {
+
+    // empty table returns empty string 
     if (size == 0 || table == nullptr){
         return "";
     }
     stringstream ss;
-    
+    // for each bucket index i
     for (int i = 0; i < size; i++) {
         ss << i << ": ";
-        
+
+        // walk the doubly linked list at bucket i (head to tail).
         Element<T>* current = table[i];
-        
-        
         while (current != nullptr) {
-           
+            // print as "(data,key)" followed by a single space
             ss << "(" << current->get_data() << "," << current->get_key() << ") ";
-         
             current = current->next;
         }
-        
-        
+        // end the bucket with newline
         ss << "\n";
         
     }
