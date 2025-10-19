@@ -1,22 +1,26 @@
-make: hash test test_hashtable
+all: test usecase
 
-hash: main.o
-	g++ main.o -o hash
+# 'usecase' executable from main.cpp
+usecase: main.o
+	g++ main.o -o usecase
 
-test: test_hashtable_example.o 
-	g++ test_hashtable_example.o -o test_hashtable_example
+# 'test' executable from test_hash_table.cpp
+test: test_hash_table.o
+	g++ test_hash_table.o -o test
 
-test_hashtable: test_hashtable.o
-	g++ test_hashtable.o -o test_hashtable
-
+# Compile main.cpp
 main.o: main.cpp usecase.cpp hash_table.cpp hash_table.h
 	g++ -c main.cpp
+
+test_hash_table.o: test_hash_table.cpp usecase.cpp hash_table.cpp hash_table.h
+	g++ -c test_hash_table.cpp
+
+# Keeping the example test
+test_hashtable_example: test_hashtable_example.o
+	g++ test_hashtable_example.o -o test_hashtable_example
 
 test_hashtable_example.o: test_hashtable_example.cpp usecase.cpp hash_table.cpp hash_table.h
 	g++ -c test_hashtable_example.cpp
 
-test_hashtable.o: test_hashtable.cpp usecase.cpp hash_table.cpp hash_table.h
-	g++ -c test_hashtable.cpp
-
 clean:
-	rm -f *.o hash test_hashtable_example test_hashtable
+	rm -f *.o test usecase test_hashtable_example
