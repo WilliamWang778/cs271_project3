@@ -26,6 +26,8 @@ Element<T> :: Element(){
     this -> next = nullptr;
     this -> prev = nullptr;
 }
+
+
 template<typename T>
 Element<T>::Element(const T& data, int k){
     this -> data = data;
@@ -70,8 +72,11 @@ const T& Element<T>::get_data() const {
 
 /* 
 H function
-index = k mod size (if k mod size >= 0)
-index = (k mod size) + size (if k mod size < 0)
+Parameters: int k is the key
+Precondition: HashTable exists
+Postcondition: returns index in tabl for given key k
+ // index = k mod size (when k mod size >= 0)
+ // index = (k mod size) + size (when k mod size < 0)
 */
 
 template<typename T>
@@ -85,8 +90,6 @@ int HashTable<T>::h(int k) const {
     }
     return index;
 }
-
-
 
 
 /*
