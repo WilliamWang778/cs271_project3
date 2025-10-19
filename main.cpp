@@ -3,7 +3,29 @@
 using namespace std;
 #include "hash_table.h"
 #include "usecase.cpp"
+/*
+Main function
 
+Description: 
+This file demonstrates the usecase implementation of a hash table based login system.
+It shows the funtionality of the create_table and login functions defined on usecase.cpp.
+
+Functionality:
+1. It creates a hash table from a CSV file containing username and password pairs.
+2. Performs automated test cases to verify login functionality:
+- Tests a valid username-password combination
+- Tests an invalid username-password combination
+3. Provides an interactive terminal interface for user login attempts
+
+Input :
+- CSV file "logins.csv" with username,password pairs
+- User input with username and password.
+
+Output:
+- Results of automated login tests
+- Interactive login result (Access granted/denied)
+
+*/
 int main(){
 
     const string csv = "logins.csv"; 
@@ -36,8 +58,6 @@ int main(){
     } else {
         cout << "(" << username2 << "," << password2 << ") : denied\n";
     }
-
-
 
     cout << "\n=== Login ===\n";
     cout << "Enter username: ";
