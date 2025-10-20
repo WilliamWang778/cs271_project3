@@ -13,9 +13,9 @@ using namespace std;
 
 /*
 Element Constructor
-Parameters: data to be stored in the element, k is the key associated with the element.
-Precondition: Valid data and key provided
-Postcondition: Element created with data and key, next and prev pointers initialized to nullptr
+Parameters: None
+Precondition: None
+Postcondition: Element created with default data and key values, next and prev pointers initialized to nullptr
 */
 
 template <typename T> 
@@ -29,6 +29,12 @@ Element<T> :: Element(){
     this -> prev = nullptr;
 }
 
+/*
+Element Constructor with parameters
+Parameters: data to be stored in the element, k is the key associated with the element.
+Precondition: Valid data and key provided
+Postcondition: Element created with data and key, next and prev pointers initialized to nullptr
+*/
 
 template<typename T>
 Element<T>::Element(const T& data, int k){
@@ -37,6 +43,13 @@ Element<T>::Element(const T& data, int k){
     this -> next = nullptr;
     this -> prev = nullptr;
 }
+
+/*
+Deconstructor
+Parameters: None
+Precondition: Element exists
+Postcondition: Element will be properly deallocated
+*/
 
 template<typename T>
 
@@ -124,6 +137,7 @@ HashTable<T>::HashTable(int m){
 
 /*
 HashTable Destructor
+Parameters: None
 Precondition: HashTable exists
 Postcondition: HashTable and all its Elements are properly deallocated
 */
@@ -153,6 +167,7 @@ HashTable<T>::~HashTable(){
 
 /*
 Insert
+Parameters: Valid data and int k as key
 Precondition: Valid data and int k as key provided
 Postcondition: Element with data and key inserted at the head of the chain at index h(k)
 */
@@ -185,6 +200,7 @@ void HashTable<T> :: insert(T data, int k){
 
 /*
 remove
+Parameters: Valid int k as key
 Precondition: valid int k as key provided
 Postcondition: Element with given key removed if it exists
 */
@@ -226,6 +242,7 @@ void HashTable<T> :: remove (int k){
 
 /*
 member
+Parameters: Valid data and int k as key
 Precondition: Valid data and key provided
 Postcondition: Returns true if element with data and key, false otherwise
 */
@@ -252,6 +269,7 @@ bool HashTable<T>::member(T data, int k) {
 
 /*
 to_string
+Parameters: None
 Precondition: HashTable exists
 Postcondition: Returns string representation of the hash table
 */
